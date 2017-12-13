@@ -11,7 +11,7 @@ THIS CODE IS MY OWN WORK.
 void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
     int i,j,k,D;
     if(n == 1){                                         //Move from A to C if there is only one disk
-        gotoxy(29,8+N);
+        gotoxy(27,8+N);
         Sleep(sec);
         printf("Move %dth disk from %c to %c\n",n,A,C);
 
@@ -57,7 +57,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
     }
     else{
         move(locate,N,n-1,sec,A,C,B);                   //If there is more than one disk, move n-1 disks from A to B
-        gotoxy(29,8+N);                                 //Then move the nth disc from A to C
+        gotoxy(27,8+N);                                 //Then move the nth disc from A to C
         Sleep(sec);
 
         printf("Move %dth disk from %c to %c\n",n,A,C);
@@ -153,25 +153,25 @@ int main(){
     }
 
     textcolor(BROWN);
-    gotoxy(26,7+N);
+    gotoxy(24,7+N);
     printf("--------------------------------\n");
-    gotoxy(26,8+N);
+    gotoxy(24,8+N);
     printf("|                              |\n");
-    gotoxy(26,9+N);
+    gotoxy(24,9+N);
     printf("--------------------------------\n");
-    gotoxy(26,10+N);
-    printf("----                     ----\n");
-    gotoxy(26,11+N);
-    printf("---          (._. )       ---\n");
-    gotoxy(26,12+N);
-    printf("--                         --\n");
-    gotoxy(26,12+N);
-    printf("--                         --\n");
+    gotoxy(24,10+N);
+    printf("----                        ----\n");
+    gotoxy(24,11+N);
+    printf("---           (._. )         ---\n");
+    gotoxy(24,12+N);
+    printf("--                            --\n");
+    gotoxy(24,12+N);
+    printf("--                            --\n");
 
     //Start moving
     textcolor(LIGHTGRAY);
     move(locate,N,n,sec,A,B,C);
-    gotoxy(39,11+N);
+    gotoxy(38,11+N);
     printf("(OwO!)     \n");
 
     gotoxy(1,20);
