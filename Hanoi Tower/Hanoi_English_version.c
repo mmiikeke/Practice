@@ -10,12 +10,12 @@ THIS CODE IS MY OWN WORK.
 
 void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
     int i,j,k,D;
-    if(n == 1){                                         //如果圓盤只有一個，從A移到C
-        gotoxy(31,8+N);
+    if(n == 1){                                         //Move from A to C if there is only one disk
+        gotoxy(29,8+N);
         Sleep(sec);
-        printf("將第%d個圓盤從%c移到%c\n",n,A,C);
+        printf("Move %dth disk from %c to %c\n",n,A,C);
 
-        gotoxy(20*(A-64)-n,4+locate[n][1]);             //圓盤從A柱(代號)消失
+        gotoxy(20*(A-64)-n,4+locate[n][1]);             //Disk disappear from A
         for(i=1;i<=n;i++){
             printf(" ");
         }
@@ -24,7 +24,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             printf(" ");
         }
 
-        k=N+1;                                          //找出C柱(代號)上最上層圓盤的位置
+        k=N+1;                                          //Find the location of the top disk on C
         for(i=1;i<=N;i++){
             if(locate[i][0] == C-64){
                 if(locate[i][1]<k){
@@ -33,7 +33,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             }
         }
 
-        gotoxy(20*(C-64)-n,4+k-1);                      //將圓盤放在最上層圓盤的上一層
+        gotoxy(20*(C-64)-n,4+k-1);                      //Place the disk above the top disk
         for(i=1;i<=n;i++){
             printf("=");
         }
@@ -42,7 +42,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             printf("=");
         }
 
-        locate[n][0] = C-64;                            //重新記錄圓盤位置
+        locate[n][0] = C-64;                            //Set the disk location
         locate[n][1] = k-1;
 
         D += 1;
@@ -56,13 +56,13 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
 
     }
     else{
-        move(locate,N,n-1,sec,A,C,B);                       //如果圓盤不只一個，將n-1個圓盤從A移到B
-        gotoxy(31,8+N);                                 //再將第n個圓盤從A移到C
+        move(locate,N,n-1,sec,A,C,B);                   //If there is more than one disk, move n-1 disks from A to B
+        gotoxy(29,8+N);                                 //Then move the nth disc from A to C
         Sleep(sec);
 
-        printf("將第%d個圓盤從%c移到%c\n",n,A,C);
+        printf("Move %dth disk from %c to %c\n",n,A,C);
 
-        gotoxy(20*(A-64)-n,4+locate[n][1]);             //圓盤從A柱(代號)消失
+        gotoxy(20*(A-64)-n,4+locate[n][1]);             //Disk disappear from A
         for(i=1;i<=n;i++){
             printf(" ");
         }
@@ -71,7 +71,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             printf(" ");
         }
 
-        k=N+1;                                          //找出C柱(代號)上最上層圓盤的位置
+        k=N+1;                                          //Find the location of the top disk on C
         for(i=1;i<=N;i++){
             if(locate[i][0] == C-64){
                 if(locate[i][1]<k){
@@ -80,7 +80,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             }
         }
 
-        gotoxy(20*(C-64)-n,4+k-1);                      //將圓盤放在最上層圓盤的上一層
+        gotoxy(20*(C-64)-n,4+k-1);                      //Place the disk above the top disk
         for(i=1;i<=n;i++){
             printf("=");
         }
@@ -89,7 +89,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             printf("=");
         }
 
-        locate[n][0] = C-64;                            //重新記錄圓盤位置
+        locate[n][0] = C-64;                            //Set the disk location
         locate[n][1] = k-1;
 
         D += 1;
@@ -100,7 +100,7 @@ void move(int locate[50][2],int N,int n,int sec,char A,char B,char C){
             printf(".");
         }
 
-        move(locate,N,n-1,sec,B,A,C);                       //最將n-1個圓盤從B移到C
+        move(locate,N,n-1,sec,B,A,C);                   //Finally, move n-1 disks from B to C
     }
 }
 
@@ -108,13 +108,14 @@ int main(){
     int n,N,i,j,locate[50][2]={0},sec;
     char A='A',B='B',C='C';
 
-    printf("請輸入[hanoi 塔]的層數 : ");
+    printf("Please enter the disk amount of [hanoi tower] : ");
     scanf("%d",&n);
-    printf("請輸入每次移動的間隔時間(ms) : ");
+    printf("Please enter the interval time of each move (ms) : ");
     scanf("%d",&sec);
     N=n;
 
-    textbackground(LIGHTGRAY);                          //畫柱子
+    //Draw pillar
+    textbackground(LIGHTGRAY);
     for(i=1;i<4;i++){
         for(j=1;j<=n;j++){
             gotoxy(20*i,4+j);
@@ -122,8 +123,9 @@ int main(){
         }
     }
 
+    //Write the code of pillars
     textbackground(BLACK);
-    textcolor(LIGHTGREEN);                               //寫柱子代號
+    textcolor(LIGHTGREEN);
     gotoxy(20,5+N);
     printf("A");
     gotoxy(40,5+N);
@@ -134,7 +136,8 @@ int main(){
     printf("%c Mike Chen %c",15,15);
     textcolor(LIGHTGRAY);
 
-    for(i=1;i<=N;i++){                                  //顯示起始狀態
+    //Show initial state
+    for(i=1;i<=N;i++){
         gotoxy(20-i,4+i);
         for(j=1;j<=i;j++){
             printf("=");
@@ -143,17 +146,19 @@ int main(){
         for(j=1;j<=i;j++){
             printf("=");
         }
-        locate[i][0]=1;                                 //設定初始位置
+
+        //Set initial location
+        locate[i][0]=1;
         locate[i][1]=i;
     }
 
     textcolor(BROWN);
     gotoxy(26,7+N);
-    printf("-----------------------------\n");
+    printf("--------------------------------\n");
     gotoxy(26,8+N);
-    printf("|                           |\n");
+    printf("|                              |\n");
     gotoxy(26,9+N);
-    printf("-----------------------------\n");
+    printf("--------------------------------\n");
     gotoxy(26,10+N);
     printf("----                     ----\n");
     gotoxy(26,11+N);
@@ -162,8 +167,10 @@ int main(){
     printf("--                         --\n");
     gotoxy(26,12+N);
     printf("--                         --\n");
+
+    //Start moving
     textcolor(LIGHTGRAY);
-    move(locate,N,n,sec,A,B,C);                             //開始移動
+    move(locate,N,n,sec,A,B,C);
     gotoxy(39,11+N);
     printf("(OwO!)     \n");
 
