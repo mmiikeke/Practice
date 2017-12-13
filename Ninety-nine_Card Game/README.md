@@ -1,6 +1,6 @@
 # Ninety-nine_Card Game
 ![image](https://github.com/mmiikeke/Practice/blob/master/Ninety-nine_Card%20Game/image/img2.PNG) 
-**Have Fun~
+**Have Fun~**
 
 - winmm.lib
     winmm.lib is used to play the background music. To make it run correctly, it should be linked into libraries.   
