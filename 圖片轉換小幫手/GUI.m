@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 07-Nov-2017 06:22:18
+% Last Modified by GUIDE v2.5 23-Nov-2017 02:46:52
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -58,6 +58,13 @@ handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
+set(handles.InputText, 'String', fullfile(pwd,'input'));
+set(handles.OutputText, 'String', fullfile(pwd,'output'));
+
+
+%set(handles.InputText, 'String', fullfile(pwd,'input'));
+%set(handles.OutputText, 'String', fullfile(pwd,'output'));
+
 % UIWAIT makes GUI wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
@@ -85,9 +92,11 @@ start = questdlg({'請確認以下路徑是否正確' '輸入資料夾' Input '輸出資料夾' Outpu
 
 if start == '是'
     h = waitbar(0,{'Please wait..' ' '});
-    getAllFiles(Input, Output, h);
+    getAllFiles(Input, Output, h, get(handles.Grayscale, 'value'), get(handles.Image_size, 'value')...
+        , [str2num(get(handles.Image_size_height, 'String')) str2num(get(handles.Image_size_width, 'String'))]...
+        , get(handles.cropbutton, 'value'));
     close(h);
-    h = msgbox('轉檔完成','轉檔');
+    h = msgbox('轉檔完成!','轉檔');
 end
 
 % --- Executes on button press in Input.
@@ -111,9 +120,120 @@ if filepath ~= 0
     set(handles.OutputText, 'String', filepath);
 end
 
+% --- Executes on button press in Grayscale.
+function Grayscale_Callback(hObject, eventdata, handles)
+% hObject    handle to Grayscale (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of Grayscale
+
+
+% --- Executes on button press in Image_size.
+function Image_size_Callback(hObject, eventdata, handles)
+% hObject    handle to Image_size (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of Image_size
+if get(handles.Image_size, 'value') == 0
+    set(handles.cropbutton, 'enable', 'off');
+    set(handles.Image_size_width, 'enable', 'off');
+    set(handles.Image_size_height, 'enable', 'off');
+    set(handles.sizepanel, 'foregroundcolor', [0.502 0.502 0.502]);
+    set(handles.cropbutton, 'foregroundcolor', [0.502 0.502 0.502]);
+    set(handles.widthText, 'foregroundcolor', [0.502 0.502 0.502]);
+    set(handles.heightText, 'foregroundcolor', [0.502 0.502 0.502]);
+else
+    set(handles.sizepanel, 'foregroundcolor', [0 0 0]);
+    set(handles.cropbutton, 'enable', 'on');
+    set(handles.Image_size_width, 'enable', 'on');
+    set(handles.Image_size_height, 'enable', 'on');
+    set(handles.sizepanel, 'foregroundcolor', [0 0 0]);
+    set(handles.cropbutton, 'foregroundcolor', [0 0 0]);
+    set(handles.widthText, 'foregroundcolor', [0 0 0]);
+    set(handles.heightText, 'foregroundcolor', [0 0 0]);
+end
+
+
+function Image_size_width_Callback(hObject, eventdata, handles)
+% hObject    handle to Image_size_width (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Image_size_width as text
+%        str2double(get(hObject,'String')) returns contents of Image_size_width as a double
+str=get(hObject,'String');
+if isempty(str2num(str))
+    set(hObject,'string','0');
+    warndlg('Input must be numerical');
+end
+
+% --- Executes during object creation, after setting all properties.
+function Image_size_width_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Image_size_width (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function Image_size_height_Callback(hObject, eventdata, handles)
+% hObject    handle to Image_size_height (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Image_size_height as text
+%        str2double(get(hObject,'String')) returns contents of Image_size_height as a double
+str=get(hObject,'String');
+if isempty(str2num(str))
+    set(hObject,'string','0');
+    warndlg('Image size must be numerical');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function Image_size_height_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Image_size_height (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on key press with focus on Image_size_width and none of its controls.
+function Image_size_width_KeyPressFcn(hObject, eventdata, handles)
+% hObject    handle to Image_size_width (see GCBO)
+% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
+%	Key: name of the key that was pressed, in lower case
+%	Character: character interpretation of the key(s) that was pressed
+%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
+% handles    structure with handles and user data (see GUIDATA)
+str=get(hObject,'String');
+if isempty(str2num(str))
+    set(hObject,'string','0');
+    warndlg('Image size must be numerical');
+end
+
+
+% --- Executes on button press in cropbutton.
+function cropbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to cropbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of cropbutton
+
 
 %getAllFiles('Source', 'Output');
-function getAllFiles(inputDir, outputDir, h)
+function getAllFiles(inputDir, outputDir, h, doGrayscale, doImage_size, imageSize, doCrop)
     types = ['.jpg';'.png';'.bmp'];
     types2 = ['jpeg'];
     if exist(outputDir) == 0                            % Make dir
@@ -129,8 +249,26 @@ function getAllFiles(inputDir, outputDir, h)
                 %disp([outputDir '\' file{1}]);
                 waitbar(0,h,{'Converting..' file{1}});
                 x = imread([inputDir '\' file{1}]);
-                y = rgb2gray(x);
-                imwrite(y,[outputDir '\' file{1}]);
+                
+                if doImage_size == 1
+                    if doCrop == 1                      % Crop image
+                        factor_width = size(x,1)*imageSize(2)/imageSize(1);
+                        factor_height = size(x,2)*imageSize(1)/imageSize(2);
+                        if size(x,1) > factor_height
+                            x = imcrop(x, [1,(size(x,1)-factor_height)/2,size(x,2),factor_height]);
+                        else
+                            x = imcrop(x, [(size(x,2)-factor_width)/2,1,factor_width,size(x,1)]);
+                            disp(num2str((size(x,2)-factor_width)/2 + factor_width - (size(x,2)-factor_width)/2));
+                        end
+                    end
+                    x = imresize(x, imageSize);         % Resize image
+                end
+                
+                if doGrayscale == 1 && size(x,3) == 3
+                    x = rgb2gray(x);                    % Grayscale transform
+                end
+                
+                imwrite(x,[outputDir '\' file{1}]);
             end
         end
     end
@@ -141,5 +279,5 @@ function getAllFiles(inputDir, outputDir, h)
 	for iDir = find(validIndex)                         % Loop over valid subdirectories
 	nextInputDir = fullfile(inputDir,subDirs{iDir});    % Get the subdirectory path
     nextOutputDir = fullfile(outputDir,subDirs{iDir});
-	getAllFiles(nextInputDir,nextOutputDir, h);            % Recursively call getAllFiles
+	getAllFiles(nextInputDir,nextOutputDir, h, doGrayscale, doImage_size, imageSize, doCrop);   % Recursively call getAllFiles
     end
