@@ -1333,14 +1333,14 @@ void gameover(int playcount,int playeramount,int *exit){
     *exit = input-1;
 }
 /*
-playcount 計數器，每輪完一個玩家計數器就+1。   poker[52] 52張牌，裡面一開始是編號0~51，0=黑桃1 1=愛心1 2=方塊1 3=梅花1 4=黑桃2 5=愛心2 6=方塊2 7=梅花2 ......
-pokerleft 儲存poker[52]裡剩下的張數          playerpoker[4][6] 儲存4個玩家5張牌(第6張牌為記錄玩家出什麼牌)，若沒牌則=60
-playeramount 玩家人數                       inv 是否迴轉，inv=0 則 playcount += 1，inv=1 則 playcount -= 1
-point 目前點數，>99則爆掉                    exit 每輪完一個玩家,檢查point是否>99，若是則exit=1，跳出第一個while，再詢問是否重新，若是則exit=0
+playcount 計數器，每輪完一個玩家計數器就+1	poker[52] 52張牌，裡面一開始是編號0~51，0=黑桃1 1=愛心1 2=方塊1 3=梅花1 4=黑桃2 5=愛心2 6=方塊2 7=梅花2 ......
+pokerleft 儲存poker[52]裡剩下的張數          	playerpoker[4][6] 儲存4個玩家5張牌(第6張牌為記錄玩家出什麼牌)，若沒牌則=60
+playeramount 玩家人數                       	inv 是否迴轉，inv=0 則 playcount += 1，inv=1 則 playcount -= 1
+point 目前點數，>99則爆掉                    	exit 每輪完一個玩家,檢查point是否>99，若是則exit=1，跳出第一個while，再詢問是否重新，若是則exit=0
 count 計數器，每輪完一個玩家計數器就+1。
 */
 int main(){
-    int playcount,count, poker[52],pokerleft, playerpoker[4][6], playeramount, inv, point, exit, i, j, choose[2],change[3][3], backgroundmusic;
+    int playcount, count, poker[52], pokerleft, playerpoker[4][6], playeramount, inv, point, exit, i, j, choose[2], change[3][3], backgroundmusic;
     char playernameI[10], playernameII[10], playernameIII[10], playernameIIII[10];
     srand(time(NULL));
 
